@@ -1,16 +1,21 @@
 import axios from "axios";
-import { Inter } from "next/font/google";
 import { useState, useEffect } from "react";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   let [data, setData] = useState({})
 
   useEffect(() => {
-    axios.get("http://localhost:8000/getUsers").then((res) => {console.log(res);setData(res.data)})
+    axios.get("http://localhost:8000/getUsers").then((res) => {console.log(res.data);setData(...res.data)})
   },[])
   return (
-    <div>{}</div>
+  <div>
+    <div>{data.name}</div>
+    <div>{data.email}</div>
+    <div>{data.password}</div>
+    <div>{data.avatar}</div>
+    <div>{data.createdAt}</div>
+    <div>{data.updatedAt}</div>
+    <div>{data.curency_type}</div>
+  </div>
   );
 }

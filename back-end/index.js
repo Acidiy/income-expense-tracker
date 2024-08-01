@@ -14,7 +14,11 @@ app.get("/", async (req, res) => {
     CREATE TABLE IF NOT EXISTS "users" (
       name VARCHAR(255) NOT NULL,
       email VARCHAR(255) UNIQUE,
-      password VARCHAR(255) NOT NULL
+      password VARCHAR(255) NOT NULL,
+      avatar VARCHAR(255) NOT NULL,
+      createdAt VARCHAR(255) NOT NULL,
+      updatedAt VARCHAR(255) NOT NULL,
+      curency_type VARCHAR(255) NOT NULL
     )`
 
     try {
@@ -27,8 +31,8 @@ app.get("/", async (req, res) => {
 
 app.get("/createUser", async (req, res) => {
     let queryText = `
-    INSERT INTO users (name, email, password)
-    VALUES ('ashido', 'llvm@gmail.com', 'fdsafds');
+    INSERT INTO users (name, email, password, avatar, createdAt, updatedAt, curency_type)
+    VALUES ('ashid', 'ashid@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT');
     `
 
     try {
@@ -40,6 +44,17 @@ app.get("/createUser", async (req, res) => {
     
     res.send("user created")
 })
+
+// VALUES ('khulan', 'khulan@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT'),
+// VALUES ('shijir', 'shijir@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT'),
+// VALUES ('soyol', 'soyol@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT'),
+// VALUES ('tamir', 'tamir@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT'),
+// VALUES ('sukhe', 'sukhe@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT'),
+// VALUES ('degii', 'degii@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT'),
+// VALUES ('bayara', 'bayara@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT'),
+// VALUES ('tuul', 'tuul@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT'),
+// VALUES ('orgil', 'orgil@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT');
+
 
 app.get("/getUsers", async (req, res) => {
     let queryText = `
