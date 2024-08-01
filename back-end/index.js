@@ -33,13 +33,16 @@ app.get("/users", async (req, res) => {
 })
 
 app.post("/users/create", async (req, res) => {
+
     let queryText = `
     INSERT INTO users (name, email, password, avatar, currency_type)
     VALUES ($1, $2, $3, $4, $5) RETURNING *;
     `
 
+    let { name, email, password, avatar, currency_type } = req.body
+
     try {
-        await db.query(queryText, ['tuul', 'tuul@gmail.com', 'gsughsbvjkbag', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRms4SSvT_4IGE0kKkrS1oMdBLjREB9wJCNQA&s', 'MNT'])
+        await db.query(queryText, [name, email, password, avatar, currency_type])
     } catch (error) {
         console.error(error);
     }
@@ -58,6 +61,19 @@ app.post("/users/create", async (req, res) => {
 // VALUES ('tuul', 'tuul@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT'),
 // VALUES ('orgil', 'orgil@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT');
 
+app.put("/users/:id", async (req, res) => {
+    let { id } = req.params
+    let { name, email, password } = req.body
+
+
+
+    try {
+        let result = await db.query(`UPDATE users SET name=$1`, [name]);
+        if (result.rows.length === 0) res.status(400).json({ error: "Item not found" })
+        else res.status(200).json(result.rows[0])
+    }
+    catch (error) { console.error(error); }
+})
 
 app.get("/users/get", async (req, res) => {
     let queryText = `
@@ -70,7 +86,6 @@ app.get("/users/get", async (req, res) => {
     } catch (error) {
         console.error(error);
     }
-
 })
 
 app.listen(port, () => {
