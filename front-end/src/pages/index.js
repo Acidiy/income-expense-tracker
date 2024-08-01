@@ -2,20 +2,16 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 
 export default function Home() {
-  let [data, setData] = useState({})
+  let [data, setData] = useState([])
 
   useEffect(() => {
-    axios.get("http://localhost:8000/getUsers").then((res) => {console.log(res.data);setData(...res.data)})
+    axios.get("http://localhost:8000/users/get").then((res) => {console.log(res.data,'res');setData(res.data)})
   },[])
+
+  console.log(data,'data');
   return (
-  <div>
-    <div>{data.name}</div>
-    <div>{data.email}</div>
-    <div>{data.password}</div>
-    <div>{data.avatar}</div>
-    <div>{data.createdAt}</div>
-    <div>{data.updatedAt}</div>
-    <div>{data.curency_type}</div>
-  </div>
+  <main>
+    {data.map((element, index) => <div key={index} className="flex gap-4"><img src={element.avatar} className="size-10 rounded-full"/><div className="font-thin text-xl my-auto">{element.name}</div></div>)}
+  </main>
   );
 }
