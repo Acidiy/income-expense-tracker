@@ -51,29 +51,21 @@ app.post("/users/create", async (req, res) => {
     res.send("user created")
 })
 
-// VALUES ('khulan', 'khulan@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT'),
-// VALUES ('shijir', 'shijir@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT'),
-// VALUES ('soyol', 'soyol@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT'),
-// VALUES ('tamir', 'tamir@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT'),
-// VALUES ('sukhe', 'sukhe@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT'),
-// VALUES ('degii', 'degii@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT'),
-// VALUES ('bayara', 'bayara@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT'),
-// VALUES ('tuul', 'tuul@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT'),
-// VALUES ('orgil', 'orgil@gmail.com', 'fdsafds', 'empty', 'NaN', 'NaN', 'MNT');
-
 app.put("/users/:id", async (req, res) => {
     let { id } = req.params
-    let { name, email, password } = req.body
-
-
+    let {name, email} = req.body
 
     try {
-        let result = await db.query(`UPDATE users SET name=$1`, [name]);
-        if (result.rows.length === 0) res.status(400).json({ error: "Item not found" })
-        else res.status(200).json(result.rows[0])
+        let result = await db.query(`UPDATE users SET name = 'ashido', email = 'ashido@hotmail.com' WHERE id = '709a9f91-1fba-4f74-ae17-5db9299e0a05' RETURNING *`);
+        res.status(200).json(result.rows[0])
+        if (result.rows[0] === 0) res.status(404).json({error:"User not found"})
+            else res.status(200).json(result.rows[0])
     }
-    catch (error) { console.error(error); }
-})
+    catch (err) {
+        console.error(err);
+        // res.status(500).json({ error: "Database error" });
+    }
+});
 
 app.get("/users/get", async (req, res) => {
     let queryText = `
