@@ -5,6 +5,7 @@ import { db } from "./database.js"
 import { user } from "./src/router/user.js"
 import { record } from "./src/router/record.js"
 import { category } from "./src/router/category.js"
+import { auth } from "./src/router/auth.js"
 
 let app = express()
 app.use(bodyParser.json())
@@ -12,6 +13,7 @@ app.use(cors())
 app.use('/users',user)
 app.use('/record', record)
 app.use('/category', category)
+app.use('/api', auth)
 
 let port = 8000
 
@@ -23,7 +25,7 @@ app.post("/users/", async (req, res) => {
       name VARCHAR(255) NOT NULL,
       email VARCHAR(255) UNIQUE,
       password VARCHAR(255) NOT NULL,
-      avatar TEXT,
+      avatar TEXT
       createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       currency_type TEXT DEFAULT 'USD' NOT NULL

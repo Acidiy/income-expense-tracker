@@ -1,5 +1,4 @@
 import { db } from "../../database.js";
-import { category } from "../router/category.js";
 
 export let postCategory = async (req, res) => {
     let { name, description, category_image } = req.body

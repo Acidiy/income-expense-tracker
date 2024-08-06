@@ -1,16 +1,16 @@
 import { db } from "../../database.js"
 
 export let getUsers = async (req, res) => {
-    let queryText = `
-    SELECT * FROM users
-    `
+    let {email} = req.body
+    let users = []
 
     try {
-        let users = await db.query(queryText)
-        res.send(users.rows)
+        users = await db.query(`SELECT password FROM users WHERE email = $1`,[email])
     } catch (error) {
         console.error(error);
     }
+    finally {return users.rows}
+    
 }
 export let getUser = async (req, res) => {
     let {id} = req.params
