@@ -40,24 +40,24 @@ app.post("/users/", async (req, res) => {
 })
 app.post("/record", async (req, res) => {
 
-    let {id} = req.body
-
     let tableQueryText = `
-    CREATE TABLE IF NOT EXISTS "record" (
+        CREATE TABLE IF NOT EXISTS "record" (
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-      user_id TEXT,
+      user_id uuid,
       name TEXT,
       amount REAL NOT NULL,
       transaction_type TEXT DEFAULT 'INC' NOT NULL,
       description TEXT,
       createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      category_id TEXT
+      category_id uuid,
+      FOREIGN KEY (user_id) REFERENCES users (id),
+      FOREIGN KEY (category_id) REFERENCES category (id)
     )`
 
     try {
         let result = await db.query(tableQueryText)
-        res.status(200).send('Record Created')
+        res.status(200).send(result)
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Database error" });

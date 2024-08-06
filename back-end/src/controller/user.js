@@ -24,7 +24,7 @@ export let getUser = async (req, res) => {
     }
 }
 
-export let createUser = async (req, res) => {
+export let postUser = async (req, res) => {
 
     let queryText = `
     INSERT INTO users (name, email, password, avatar, currency_type)

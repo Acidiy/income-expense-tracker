@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { Table } from "@/components/ui/table";
 
 export default function Home() {
   let [data, setData] = useState([])

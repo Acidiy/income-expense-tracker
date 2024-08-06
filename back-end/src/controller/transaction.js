@@ -10,10 +10,11 @@ export let postRecord = async (req, res) => {
     let { user_id, name, amount, transaction_type, description, category_id } = req.body
 
     try {
-        let result = await db.query(queryText, [user_id, name, amount, transaction_type, description, category_id])
+        let result = await db.query(queryText, [ user_id, name, amount, transaction_type, description, category_id ])
         res.status(200).json(result.rows)
     } catch (error) {
         console.error(error);
+        res.status(404).send('Id or Database Error')
     }
 }
 export let getRecords = async (req, res) => {
@@ -29,10 +30,18 @@ export let getRecords = async (req, res) => {
     }
 }
 export let getRecord = async (req, res) => {
+    try{
+        let allREcordId = await db.query(`SELECT id FROM record`)
+        console.log(allREcordId.rows);
+    }catch(error){console.error(error)}
+
     let { id } = req.params
     try{
+        if(id.length === 0) res.status(404).send('Not A Valid Id')
+            else{
         let result = await db.query(`SELECT * FROM record WHERE id = $1`,[id])
         res.send(result.rows)
+            }
     }
     catch (error){
         console.error(error);
@@ -56,8 +65,11 @@ export let putRecord = async (req, res) => {
 export let deleteRecord = async (req, res) => {
     let { id } = req.params
     try {
-        await db.query(`DELETE FROM record WHERE id = $1 RETURNING *`, [id])
-        res.status(200).send('Record Deleted')
+        if (id.length === 0) res.status(404).send('Not A Valid Id')
+        else{
+            await db.query(`DELETE FROM record WHERE id = $1 RETURNING *`, [id])
+            res.status(200).send('Record Deleted')
+        }
     }
     catch (err) {
         console.error(err);
