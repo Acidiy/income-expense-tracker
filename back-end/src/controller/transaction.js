@@ -30,22 +30,23 @@ export let getRecords = async (req, res) => {
     }
 }
 export let getRecord = async (req, res) => {
-    try{
-        let allREcordId = await db.query(`SELECT id FROM record`)
-        console.log(allREcordId.rows);
-    }catch(error){console.error(error)}
 
-    let { id } = req.params
+    let {user_id} = req.params
+
     try{
-        if(id.length === 0) res.status(404).send('Not A Valid Id')
-            else{
-        let result = await db.query(`SELECT * FROM record WHERE id = $1`,[id])
-        res.send(result.rows)
-            }
-    }
-    catch (error){
-        console.error(error);
-    }
+        let user_records = await db.query(`SELECT * FROM record WHERE user_id =$1`,[user_id])
+        if (user_records.length === 0) res.status(404).json({error:'No Such Records'})
+            else res.status(200).send(user_records)
+    }catch(error){res.status(500).json({error:'Database Error'})}
+}
+export let getRecordbyIdandCategory = async (req,res)=>{
+    let {user_id,category_id} = req.params
+
+    try{
+        let user_category_records = await db.query(`SELECT * FROM record WHERE user_id=$1 AND category_id=$2`,[user_id,category_id])
+        if (user_category_records.length === 0) res.status(404).json({error:'No Such Records'})
+            else res.status(200).send(user_category_records)
+    }catch(error){res.status(500).json({error:'Database Error'})}
 }
 export let putRecord = async (req, res) => {
     let { id } = req.params
