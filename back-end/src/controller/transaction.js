@@ -31,13 +31,11 @@ export let getRecords = async (req, res) => {
 }
 export let getRecord = async (req, res) => {
 
-    let {user_id} = req.params
-    let hold = []
-
     try{
-        let user_records = await db.query(`SELECT * FROM record WHERE user_id =$1`,[user_id])
-        if (user_records.length === 0) res.status(404).json({error:'No Such Records'})
-            else res.status(200).send(user_records.rows); hold = user_records.rows; console.log(hold);
+        let {category, user_id } = req.body
+        let record = await db.query(`SELECT * FROM record WHERE category=$1 OR user_id=$2`,[category,user_id])
+        if (record.length === 0) return res.status(404).json({record:'Does Not Exist'})
+            else return res.status(200).json(record.rows[0])
     }catch(error){res.status(500).json({error:'Database Error'})}
 }
 export let getRecordbyIdandCategory = async (req,res)=>{

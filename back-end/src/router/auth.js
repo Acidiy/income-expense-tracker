@@ -1,8 +1,8 @@
 import express from 'express'
-import { signIn } from '../controller/auth.js'
+import { signIn, signUp } from '../controller/auth.js'
 
 let auth = express.Router()
 
-auth.post('/signIn',signIn)
+auth.post('/signIn',signIn).post('/signUp',signUp)
 
 export {auth}

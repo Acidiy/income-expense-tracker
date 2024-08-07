@@ -13,34 +13,36 @@ export let getUsers = async (req, res) => {
     
 }
 export let getUser = async (req, res) => {
-    let {id} = req.params
+    let {email,id} = req.body
+    let user
 
     try {
-        if(id.length === 0) res.status(404).send('Not A Valid Id')
-            else{let users = await db.query(`SELECT * FROM users WHERE id=$1`,[id]);res.send(users.rows)}
+        user = await db.query(`SELECT * FROM users WHERE email=$1 OR id=$2`,[email,id])
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Database error" });
+    } finally {
+        console.log(user.rows[0]);
+        return user.rows[0]
     }
 }
 
 export let postUser = async (req, res) => {
-
     let queryText = `
-    INSERT INTO users (name, email, password, avatar, currency_type)
-    VALUES ($1, $2, $3, $4, $5) RETURNING *;
+    INSERT INTO users (name, email, password)
+    VALUES ($1, $2, $3) RETURNING *
     `
 
-    let { name, email, password, avatar, currency_type } = req.body
+    let { name, email, password } = req.body
+    let result
 
     try {
-        await db.query(queryText, [name, email, password, avatar, currency_type])
+        result = await db.query(queryText, [name, email, password])
     } catch (error) {
-        console.error(error);
+        return error
+    } finally {
+        return result.rows[0]
     }
-
-
-    res.send("user created")
 }
 
 export let putUser = async (req, res) => {
