@@ -1,10 +1,9 @@
 import express from "express"
 import bodyParser from "body-parser"
 import cors from 'cors'
-import { db } from "./database.js"
 import { user } from "./src/router/user.js"
-import { category } from "./src/router/category.js"
 import { transaction } from "./src/router/record.js"
+import { category } from "./src/router/category.js"
 
 let app = express()
 app.use(bodyParser.json())

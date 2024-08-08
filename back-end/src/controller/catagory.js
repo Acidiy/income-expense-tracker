@@ -11,3 +11,14 @@ export let newCategory = async (req,res) => {
     }
 }
 
+export let putCategoryImage = async (req,res) => {
+    try{
+        let {category_image,id} = req.body
+        let newCategory = await db.query(`UPDATE category SET category_image=$1, updatedat=CURRENT_TIMESTAMP WHERE id=$2 RETURNING *`,[category_image,id])
+        return res.status(200).json(newCategory.rows[0])
+    }
+    catch(error){
+        return res.status(500).json('Database Error')
+    }
+}
+

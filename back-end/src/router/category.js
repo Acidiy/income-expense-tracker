@@ -1,8 +1,8 @@
 import express from 'express'
-import { newCategory } from '../controller/catagory.js'
+import { newCategory, putCategoryImage } from '../controller/catagory.js'
 
 let category = express.Router()
 
-category.post('/createCategory', newCategory)
+category.post('/createCategory', newCategory).put('/changeCategoryImage', putCategoryImage)
 
-export {category}
+export { category }
