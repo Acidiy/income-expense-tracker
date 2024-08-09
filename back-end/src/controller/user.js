@@ -102,5 +102,35 @@ export let putUserAvatar = async (req, res) => {
   }
 }
 
-// updatedUser = db.query(`UPDATE users SET password=$1 WHERE id=$2`,[newPasswordHash,id])
-//         console.log(updatedUser);
+// export let getUserbyFilter = async (req, res) => {
+//   let { name, email, from, to } = req.body
+//   try {
+//     // let user = await db.query(`SELECT * FROM users WHERE name=$1 OR email=$2 OR createdat BETWEEN $3 AND $4`, [name, email, from, to])
+
+    
+//     let user = await db.query(`SELECT * FROM users WHERE name=$1 OR (createdat >= '${from}' AND createdat <= '${to}')`,[name])
+//     // WHERE NOT (From_date > @RangeTill OR To_date < @RangeFrom)
+//     if (user.length === 0) return res.status(404).json('No Such User')
+//     else return res.status(200).json(user.rows)
+//   }
+//   catch (error) {
+//     console.log(error);
+
+//     return res.status(500).json(error)
+//   }
+// }
+export let getUserbyFilter = async (req, res) => {
+  let body = req.body
+  let {query} = body
+  delete body.query
+  let querytext = `SELECT * FROM users `
+  querytext = querytext + query
+  try {
+    let result = await db.query(querytext,[...Object.values(body)])    
+    return res.status(200).json(result.rows)
+  }
+  catch (error) {
+    console.log(error);
+    return res.status(500).json(error)
+  }
+}
