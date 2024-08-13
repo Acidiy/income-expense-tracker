@@ -16,7 +16,7 @@ export const postUser = async (req, res) => {
 }
 
 export let signIn = async (req, res) => {
-  const { password, email } = req.body
+  let { password, email } = req.body
   try {
     let user = await db.query(`SELECT * FROM users WHERE email=$1`, [email])
 
@@ -24,7 +24,7 @@ export let signIn = async (req, res) => {
       if (result) {
         return res.send({ success: true, user: user.rows[0] })
       } else {
-        return res.send({ error: "Invalid email or password" })
+        return res.send({ success:false, error: "Invalid email or password" })
       }
     })
   } catch (err) {
@@ -102,23 +102,6 @@ export let putUserAvatar = async (req, res) => {
   }
 }
 
-// export let getUserbyFilter = async (req, res) => {
-//   let { name, email, from, to } = req.body
-//   try {
-//     // let user = await db.query(`SELECT * FROM users WHERE name=$1 OR email=$2 OR createdat BETWEEN $3 AND $4`, [name, email, from, to])
-
-    
-//     let user = await db.query(`SELECT * FROM users WHERE name=$1 OR (createdat >= '${from}' AND createdat <= '${to}')`,[name])
-//     // WHERE NOT (From_date > @RangeTill OR To_date < @RangeFrom)
-//     if (user.length === 0) return res.status(404).json('No Such User')
-//     else return res.status(200).json(user.rows)
-//   }
-//   catch (error) {
-//     console.log(error);
-
-//     return res.status(500).json(error)
-//   }
-// }
 export let getUserbyFilter = async (req, res) => {
   let body = req.body
   let {query} = body
