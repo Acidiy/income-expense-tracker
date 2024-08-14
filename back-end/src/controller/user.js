@@ -60,8 +60,24 @@ export let putUserGeneral = async (req, res) => {
   }
 }
 
+export let putUserCurrency = async (req, res) => {
+  let updatedUser
+  try {
+    let { currency_type, id } = req.body
+    updatedUser = await db.query(`UPDATE users SET currency_type = $1, updatedat=CURRENT_TIMESTAMP WHERE id=$2 RETURNING *`, [currency_type, id])
+    if(updatedUser.length === 0) return res.status(404).json({error:'No Such User'})
+  }
+  catch (error) {
+    console.log(error);
+    return res.status(500).json({ error })
+  }
+  finally {
+    return res.status(200).json(updatedUser.rows[0])
+  }
+}
+
 export let putUserPassword = async (req, res) => {
-  let oldUser, updatedUser
+  let oldUser
   try {
     let { password, id } = req.body
     oldUser = await db.query(`SELECT * FROM users WHERE id=$1`, [id])
