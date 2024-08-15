@@ -53,7 +53,7 @@ let SignUpPage = () => {
                 <div className="font-semibold text-2xl">Good Job!</div>
                 <div className="text-center">Your very first account has been created. Now continue to dashboard and start tracking</div>
             </div>
-            <Button onClick={() => router.push("/dashboard")}>Go to Dashboard</Button>
+            <Button onClick={() => router.push(`${newUser.data.id}/dashboard`)}>Go to Dashboard</Button>
         </div> : null}
     </div>
 }

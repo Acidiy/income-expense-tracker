@@ -133,3 +133,14 @@ export let getUserbyFilter = async (req, res) => {
     return res.status(500).json(error)
   }
 }
+
+export let  getUserbyId = async (req, res) => {
+  let {id} = req.params
+  let user
+  try {
+    user = await db.query(`SELECT * FROM users WHERE id=$1`,[id])
+    if (user.length === 0) return res.status(404).json({success:false, error:'No Such User'})
+  }
+  catch(error){return res.status(500).json({success:false, error:'Database Error'})}
+  finally {return res.status(200).json({success:true, user:user.rows})}
+}
