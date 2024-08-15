@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import axios from "axios";
 
-export let BaseCurrnecy = ({user, setStep}) => {
+export let BaseCurrnecy = ({user, setStep, updateUser}) => {
 
     console.log(user,'user');
     
