@@ -1,7 +1,7 @@
-import { Layout } from "@/components/dashboardlayout";
+import { Layout } from "@/components/dashboardlayout"
 
 let RecordPage = () => {
-    return <Layout>
+    return <Layout currentPage={'Record Page'}>
 
     </Layout>
 }

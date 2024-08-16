@@ -118,6 +118,21 @@ export let putUserAvatar = async (req, res) => {
   }
 }
 
+export let putUserBalance = async (req, res) => {
+  let newUserBalance
+  try{
+    let {balance, id} = req.body
+    newUserBalance = await db.query(`UPDATE users SET balance=$1, updatedat=CURRENT_TIMESTAMP WHERE id=$2 RETURNING *`,[balance, id])
+  }
+  catch(error){
+    console.log(error);
+    return res.status(500).json({error})
+  }
+  finally{
+    return res.status(200).json(newUserBalance.rows[0])
+  }
+}
+
 export let getUserbyFilter = async (req, res) => {
   let body = req.body
   let {query} = body
@@ -132,15 +147,4 @@ export let getUserbyFilter = async (req, res) => {
     console.log(error);
     return res.status(500).json(error)
   }
-}
-
-export let  getUserbyId = async (req, res) => {
-  let {id} = req.params
-  let user
-  try {
-    user = await db.query(`SELECT * FROM users WHERE id=$1`,[id])
-    if (user.length === 0) return res.status(404).json({success:false, error:'No Such User'})
-  }
-  catch(error){return res.status(500).json({success:false, error:'Database Error'})}
-  finally {return res.status(200).json({success:true, user:user.rows})}
 }
