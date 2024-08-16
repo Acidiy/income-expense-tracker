@@ -43,7 +43,7 @@ let SignUpPage = () => {
 
     return <div className="h-screen w-full p-10 bg-teal-400 flex flex-col items-center justify-center gap-5 relative">
         {step === 1 ? <><Form ref={formRef} onSubmit={onSubmit} error={error} /> <div>already have an acc?<Link href={`http://localhost:3000/sign-in`} className="underline">Sign In</Link></div></> : null}
-        {step === 2 ? <BaseCurrnecy user={newUser.data} setStep={setStep} /> : null}
+        {step === 2 ? <BaseCurrnecy user={newUser.data} setStep={setStep} setNewUser={setNewUser}/> : null}
         {step === 3 ? <div className="w-96 flex flex-col gap-5 items-center">
             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="48" height="48" rx="24" fill="#0166FF" />
@@ -53,7 +53,7 @@ let SignUpPage = () => {
                 <div className="font-semibold text-2xl">Good Job!</div>
                 <div className="text-center">Your very first account has been created. Now continue to dashboard and start tracking</div>
             </div>
-            <Button onClick={() => {localStorage.setItem('user',newUser.data);router.push(`/dashboard`)}}>Go to Dashboard</Button>
+            <Button onClick={() => {localStorage.setItem('user',JSON.stringify(newUser.data));router.push(`/dashboard/main`)}}>Go to Dashboard</Button>
         </div> : null}
     </div>
 }

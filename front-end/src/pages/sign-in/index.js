@@ -31,7 +31,8 @@ let SignInPage = () => {
         try {
             let result = await axios.post(BASE_URL + "/api/signin", { email: formRef.current[0].value, password: formRef.current[1].value })
             if (result.data.success) {
-                localStorage.setItem(JSON.stringify(result.data.user))
+                localStorage.setItem('user',JSON.stringify(result.data.user))
+                router.push('/dashboard/main')
             }
                 else setWrongForum(result.data.error)
         }

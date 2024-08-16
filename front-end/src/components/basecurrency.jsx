@@ -3,9 +3,7 @@ import { Button } from "./ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import axios from "axios";
 
-export let BaseCurrnecy = ({user, setStep, updateUser}) => {
-
-    console.log(user,'user');
+export let BaseCurrnecy = ({user, setStep, setNewUser}) => {
     
     const BASE_URL = "http://localhost:8000"
 
@@ -13,7 +11,8 @@ export let BaseCurrnecy = ({user, setStep, updateUser}) => {
 
     let onSubmit = async (event) => {
         event.preventDefault()
-        await axios.put(BASE_URL + "/api/updateAccountBaseCurrency",{currency_type:currency, id:user.id})
+        let updatedNewUser = await axios.put(BASE_URL + "/api/updateAccountBaseCurrency",{currency_type:currency, id:user.id})
+        setNewUser(updatedNewUser)
         setStep((prev)=>prev+1)
     }
     return (
