@@ -12,19 +12,23 @@ export let UserBalance = ({id}) => {
     let onSubmit = async (event) => {
         event.preventDefault()
         let newBalance = formRef.current[0].value
+        newBalance = Number(newBalance)
 
         try{
-            let result = await axios.put(BASE_URL + "/api/updateAccountBalance", {balance : newBalance, id:id})
-            console.log(result);
+            let oldBalance = await axios.get(BASE_URL + "/api/getUserbyFilter", {query:"WHERE id=$1", id:id})
+            console.log(typeof oldBalance.data[0].balance);
             
+            newBalance = newBalance + oldBalance.data[0].balance
+            let result = await axios.put(BASE_URL + "/api/updateAccountBalance", {balance : newBalance, id:id})
+            localStorage.removeItem('user')
+            localStorage.setItem('user',JSON.stringify(result.data))
         }
-        catch(error) {setError('smn wrong')}
-        finally {return}
+        catch(error) {setError('Somthing Wrong');return}
     }
-    return <div className="size-96 bg-indigo-400 rounded-2xl">
+    return <div className="h-96 w-[620px] bg-indigo-400 rounded-2xl mx-auto">
         <form ref={formRef} onSubmit={onSubmit}>
-            <Input type="number" />
-            <Button type="submit" min="1">SUBMIT</Button>
+            <Input type="number" className="h-10"/>
+            <Button type="submit" min="1" >DEPOSIT</Button>
             {error ? <div>{error}</div> : null}
         </form>
     </div>
