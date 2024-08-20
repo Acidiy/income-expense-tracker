@@ -3,11 +3,10 @@ import { Input } from "./ui/input"
 import { Button } from "./ui/button"
 import { useRef, useState } from "react"
 
-export let UserBalance = ({id}) => {
+export let UserBalance = ({balance, id}) => {
     const BASE_URL = "http://localhost:8000"
     let [error,setError] = useState('')
     let formRef = useRef()
-
 
     let onSubmit = async (event) => {
         event.preventDefault()
@@ -15,10 +14,7 @@ export let UserBalance = ({id}) => {
         newBalance = Number(newBalance)
 
         try{
-            let oldBalance = await axios.get(BASE_URL + "/api/getUserbyFilter", {query:"WHERE id=$1", id:id})
-            console.log(typeof oldBalance.data[0].balance);
-            
-            newBalance = newBalance + oldBalance.data[0].balance
+            newBalance = newBalance + balance
             let result = await axios.put(BASE_URL + "/api/updateAccountBalance", {balance : newBalance, id:id})
             localStorage.removeItem('user')
             localStorage.setItem('user',JSON.stringify(result.data))

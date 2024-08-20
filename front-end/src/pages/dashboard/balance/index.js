@@ -4,16 +4,18 @@ import { useEffect, useState } from "react"
 
 let Balance = () => {
 
-    let [userId, setUserId] = useState({})
+    let [userBalance, setUserBalance] = useState(0)
+    let [userId, setUserId] = useState('')
 
     useEffect(() => {
         let localStorageUser = JSON.parse(localStorage.getItem('user'))
+        
         if (!localStorageUser) router.push('/sign-in')
-        else setUserId(localStorageUser.id)
+        else setUserBalance(localStorageUser.balance);setUserId(localStorageUser.id)
     }, [])
 
     return <Layout currentPage={'Balance'}>
-        <UserBalance id={userId}/>
+        <UserBalance balance={userBalance} id={userId}/>
     </Layout>
 }
 

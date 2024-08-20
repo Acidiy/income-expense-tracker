@@ -22,3 +22,15 @@ export let putCategoryImage = async (req,res) => {
     }
 }
 
+export let getCategory = async (req, res) => {
+    try{
+        let categories = await db.query(`SELECT * FROM category`)
+        if (categories.length === 0) throw new Error("No Category")
+            else return res.status(200).json(categories.rows)
+    }
+    catch(error){
+        console.log(error);
+        return res.status(404).json(error)
+    }
+}
+
