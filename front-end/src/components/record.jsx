@@ -4,9 +4,11 @@ import { Button } from "./ui/button";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from "./ui/navigation-menu";
 import { Input } from "./ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { useRouter } from "next/navigation";
 
 export let AddRecord = () => {
     const BASE_URL = "http://localhost:8000"
+    let router = useRouter()
 
     let [categories, setCategories] = useState([])
     let [chosenCategory, setChosenCategory] = useState('')
@@ -16,9 +18,16 @@ export let AddRecord = () => {
 
     let formRef = useRef()
 
+    let localStorageUser
+
     let getAllCategories = async () => { let result = await axios.get(BASE_URL + "/api/getAllCategories"); setCategories(result.data) }
 
-    useEffect(() => { getAllCategories(); let localStorageUser = JSON.parse(localStorage.getItem('user')); setUserId(localStorageUser.id) }, [])
+    useEffect(() => {
+        getAllCategories()
+        localStorageUser = JSON.parse(localStorage.getItem('user'))
+        if (!localStorageUser) return router.push('/sign-in')
+            else return setUserId(localStorageUser.id)
+    }, [])
 
 
     let onSubmit = async (event) => {
@@ -38,6 +47,7 @@ export let AddRecord = () => {
                 let user_result = await axios.put(BASE_URL + "/api/updateAccountBalance", { balance: newBalance, id: userId })
                 localStorage.removeItem('user')
                 localStorage.setItem('user',JSON.stringify(user_result.data))
+                location.reload()
             }
             if (transaction_type === 'EXP') {
                 let newBalance = localStorageUser.balance - amount
@@ -45,6 +55,7 @@ export let AddRecord = () => {
                 let user_result = await axios.put(BASE_URL + "/api/updateAccountBalance", { balance: newBalance, id: userId })
                 localStorage.removeItem('user')
                 localStorage.setItem('user',JSON.stringify(user_result.data))
+                location.reload()
             }
         }
         catch (error) {
@@ -53,8 +64,8 @@ export let AddRecord = () => {
         finally { return }
     }
 
-    return <div className="h-96 w-[620px] bg-indigo-400 rounded-2xl mx-auto">
-        <div className="w-full py-1 px-4 bg-indigo-500 rounded-t-2xl">{error}</div>
+    return <div className="h-64 w-[620px] bg-indigo-400 rounded-2xl mx-auto">
+        <div className="w-full py-1 px-4 bg-gradient-to-b from-indigo-500 to-indigo-400 rounded-t-2xl">{error}</div>
         <form ref={formRef} onSubmit={onSubmit} className="p-4 grid grid-cols-2 gap-4">
             <div className="size-full flex flex-col gap-4">
 
@@ -98,3 +109,17 @@ export let AddRecord = () => {
         </form>
     </div>
 }
+
+export let ShowRecord = () => {
+    const BASE_URL = "http://localhost:8000"
+
+    useEffect(()=>{
+        axios.get(BASE_URL+"/api/getTransactions",{user_id:"6104e820-c1af-4667-374-6c70e6ce33d1"}).then((response)=>console.log(response))
+    })
+}
+
+// localStorageUser = JSON.parse(localStorage.getItem('user'))
+// if(!localStorageUser) return router.push('/sign-in')
+// return <div className="w-[620px] min-h-96 bg-indigo-400 rounded-2xl flex flex-col">
+//         <div className="min-w-full py-4 px-8 bg-gradient-to-b from-violet-400 to-indigo-400 rounded-t-2xl text-2xl font-thin">Latest Records</div>
+//     </div>

@@ -12,8 +12,8 @@ let Dashboard = () => {
         else setUser(localStorageUser)
     }, [])
     return <Layout currentPage={'Main Page'}>
-        <div className="size-full flex flex-col justify-between">
-            <div className="w-full h-96 flex justify-between">
+        <div className="size-full flex flex-col gap-8">
+            <div className="w-full h-fit grid grid-cols-2 grid-rows-2 gap-4">
                 <div className="min-w-96 h-56 relative">
                     <div className="absolute -z-0 bg-blue-500 size-full rounded-2xl"></div>
                     <div className="absolute top-5 left-5"><Logo /></div>
@@ -47,6 +47,10 @@ let Dashboard = () => {
                 <div className="min-w-96 h-56 bg-slate-100 rounded-2xl relative">
 
                 </div>
+            </div>
+            <div className="w-full h-72 bg-violet-300 rounded-2xl">
+                <div className="min-w-full py-4 px-8 bg-gradient-to-b from-violet-400 to-violet-300 rounded-t-2xl text-2xl font-thin">Latest Records</div>
+                <div className="size-full px-8"></div>
             </div>
         </div>
     </Layout>
