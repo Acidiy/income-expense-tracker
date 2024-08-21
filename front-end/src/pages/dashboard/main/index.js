@@ -1,11 +1,14 @@
+import { AddCategory, HotCategory } from "@/components/category"
 import { Layout } from "@/components/dashboardlayout"
 import { Logo } from "@/components/icon/LogoIcon"
+import { ShowRecord } from "@/components/record"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 let Dashboard = () => {
     let router = useRouter()
     let [user, setUser] = useState({})
+    let [showAddCategory,setShowAddCategory] = useState(false)
     useEffect(() => {
         let localStorageUser = JSON.parse(localStorage.getItem('user'))
         if (!localStorageUser) router.push('/sign-in')
@@ -41,17 +44,13 @@ let Dashboard = () => {
                         <div className="text-white text-xl">{user.balance}</div>
                     </div>
                 </div>
-                <div className="min-w-96 h-56 bg-slate-100 rounded-2xl relative">
+                <div className="min-w-96 h-56 bg-slate-100 rounded-2xl"></div>
 
-                </div>
-                <div className="min-w-96 h-56 bg-slate-100 rounded-2xl relative">
+                {showAddCategory ? <AddCategory setShowAddCategory={setShowAddCategory}/> : <HotCategory setShowAddCategory={setShowAddCategory}/>}
 
-                </div>
+                <div className="min-w-96 h-56 bg-slate-100 rounded-2xl"></div>
             </div>
-            <div className="w-full h-72 bg-violet-300 rounded-2xl">
-                <div className="min-w-full py-4 px-8 bg-gradient-to-b from-violet-400 to-violet-300 rounded-t-2xl text-2xl font-thin">Latest Records</div>
-                <div className="size-full px-8"></div>
-            </div>
+            <ShowRecord/>
         </div>
     </Layout>
 }

@@ -3,6 +3,6 @@ import { getTransactionbyUserId, newTransaction } from '../controller/transactio
 
 let transaction = express.Router()
 
-transaction.post('/transaction', newTransaction).get('/getTransactions', getTransactionbyUserId)
+transaction.post('/transaction', newTransaction).post('/getTransactions', getTransactionbyUserId)
 
 export { transaction }

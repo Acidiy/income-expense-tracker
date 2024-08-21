@@ -23,8 +23,8 @@ export let UserBalance = ({balance, id}) => {
     }
     return <div className="h-96 w-[620px] bg-indigo-400 rounded-2xl mx-auto">
         <form ref={formRef} onSubmit={onSubmit}>
-            <Input type="number" className="h-10"/>
-            <Button type="submit" min="1" >DEPOSIT</Button>
+            <Input type="number" min="1" className="h-10"/>
+            <Button type="submit" >DEPOSIT</Button>
             {error ? <div>{error}</div> : null}
         </form>
     </div>

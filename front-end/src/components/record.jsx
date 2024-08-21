@@ -26,7 +26,7 @@ export let AddRecord = () => {
         getAllCategories()
         localStorageUser = JSON.parse(localStorage.getItem('user'))
         if (!localStorageUser) return router.push('/sign-in')
-            else return setUserId(localStorageUser.id)
+        else return setUserId(localStorageUser.id)
     }, [])
 
 
@@ -46,7 +46,7 @@ export let AddRecord = () => {
                 let record = await axios.post(BASE_URL + "/api/transaction", { user_id: userId, name: formRef.current[4].value, amount: amount, description: formRef.current[5].value, transaction_type: transaction_type, category_id: chosenCategory })
                 let user_result = await axios.put(BASE_URL + "/api/updateAccountBalance", { balance: newBalance, id: userId })
                 localStorage.removeItem('user')
-                localStorage.setItem('user',JSON.stringify(user_result.data))
+                localStorage.setItem('user', JSON.stringify(user_result.data))
                 location.reload()
             }
             if (transaction_type === 'EXP') {
@@ -54,7 +54,7 @@ export let AddRecord = () => {
                 let record = await axios.post(BASE_URL + "/api/transaction", { user_id: userId, name: formRef.current[4].value, amount: amount, description: formRef.current[5].value, transaction_type: transaction_type, category_id: chosenCategory })
                 let user_result = await axios.put(BASE_URL + "/api/updateAccountBalance", { balance: newBalance, id: userId })
                 localStorage.removeItem('user')
-                localStorage.setItem('user',JSON.stringify(user_result.data))
+                localStorage.setItem('user', JSON.stringify(user_result.data))
                 location.reload()
             }
         }
@@ -64,8 +64,8 @@ export let AddRecord = () => {
         finally { return }
     }
 
-    return <div className="h-64 w-[620px] bg-indigo-400 rounded-2xl mx-auto">
-        <div className="w-full py-1 px-4 bg-gradient-to-b from-indigo-500 to-indigo-400 rounded-t-2xl">{error}</div>
+    return <div className="h-64 w-[620px] bg-indigo-400 rounded-2xl">
+        <div className="w-full py-1 px-4 bg-gradient-to-b from-violet-400 to-indigo-400 rounded-t-2xl">{error}</div>
         <form ref={formRef} onSubmit={onSubmit} className="p-4 grid grid-cols-2 gap-4">
             <div className="size-full flex flex-col gap-4">
 
@@ -113,13 +113,18 @@ export let AddRecord = () => {
 export let ShowRecord = () => {
     const BASE_URL = "http://localhost:8000"
 
-    useEffect(()=>{
-        axios.get(BASE_URL+"/api/getTransactions",{user_id:"6104e820-c1af-4667-374-6c70e6ce33d1"}).then((response)=>console.log(response))
-    })
-}
+    let [records,setRecords] = useState([])
 
-// localStorageUser = JSON.parse(localStorage.getItem('user'))
-// if(!localStorageUser) return router.push('/sign-in')
-// return <div className="w-[620px] min-h-96 bg-indigo-400 rounded-2xl flex flex-col">
-//         <div className="min-w-full py-4 px-8 bg-gradient-to-b from-violet-400 to-indigo-400 rounded-t-2xl text-2xl font-thin">Latest Records</div>
-//     </div>
+    useEffect(() => {
+        let localStorageUser = JSON.parse(localStorage.getItem('user'))
+        if (!localStorageUser) return router.push('/sign-in')
+        axios.post(BASE_URL + "/api/getTransactions", { user_id: localStorageUser.id }).then((response) => setRecords(response.data.rows))
+    },[])
+
+    return <div className="w-[620px] min-h-96 h-fit bg-indigo-400 rounded-2xl flex flex-col">
+        <div className="min-w-full py-4 px-8 bg-gradient-to-b from-violet-400 to-indigo-400 rounded-t-2xl text-2xl font-thin">Latest Records</div>
+        <div className="size-full flex flex-col px-8">
+            {records.map((element,index)=><div key={index} className="w-full h-10"><div className="w-full h-fit flex justify-between"><div>{element.name}</div>{element.transaction_type === 'INC' ? <div className="text-green-300">+{element.amount}</div> : <div className="text-red-400">-{element.amount}</div>}</div><div className="w-full h-[2px] bg-fuchsia-800"/></div>)}
+        </div>
+    </div>
+}
