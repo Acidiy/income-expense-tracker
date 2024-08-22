@@ -4,9 +4,14 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 let SignInPage = () => {
+
+    useEffect(()=>{
+        localStorage.clear()
+    },[])
+
     const BASE_URL = "http://localhost:8000"
 
     let formRef = useRef()

@@ -128,3 +128,22 @@ export let ShowRecord = () => {
         </div>
     </div>
 }
+
+export let ShowLatestRecord = () => {
+    const BASE_URL = "http://localhost:8000"
+
+    let [records,setRecords] = useState([])
+
+    useEffect(() => {
+        let localStorageUser = JSON.parse(localStorage.getItem('user'))
+        if (!localStorageUser) return router.push('/sign-in')
+        axios.post(BASE_URL + "/api/getLatestTransactions", { user_id: localStorageUser.id }).then((response) => setRecords(response.data))
+    },[])
+
+    return <div className="w-96 h-fit bg-gradient-to-tl from-green-700 to-stone-400 rounded-2xl">
+        <div className="w-full px-8 py-2 text-2xl font-thin">Latest Records</div>
+        <div className="w-full px-8 flex flex-col">
+            {records.map((element,index)=><div key={index} className="w-full"><div className="flex justify-between"><p>{element.name}</p><p>{element.createdat}</p></div><div className="w-full h-[2px] bg-slate-700"/></div>)}
+        </div>
+    </div>
+}

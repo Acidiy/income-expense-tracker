@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { useState, useRef } from "react";
 import { useRouter } from "next/router";
@@ -8,6 +8,10 @@ import { BaseCurrnecy } from "@/components/basecurrency";
 import { Button } from "@/components/ui/button";
 
 let SignUpPage = () => {
+
+    useEffect(()=>{
+        localStorage.clear()
+    },[])
 
     const BASE_URL = "http://localhost:8000"
 

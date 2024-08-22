@@ -22,7 +22,7 @@ export let Layout = ({children, currentPage}) => {
 
     return(
         <main className="h-screen w-screen px-[500px] py-20 relative bg-teal-400">
-            {showAddRecord ? <><div onClick={()=>setShowAddRecord(!showAddRecord)} className="h-screen w-screen absolute left-0 top-0 z-20 bg-[#00000030] flex justify-center items-center"/><div className="size-fit absolute z-30 m-auto"><AddRecord/></div></> : null}
+            {showAddRecord ? <><div onClick={()=>setShowAddRecord(!showAddRecord)} className="h-screen w-screen absolute left-0 top-0 z-20 bg-[#00000099] flex justify-center items-center"/><div className="size-fit absolute z-30 m-auto"><AddRecord/></div></> : null}
             <div className="h-16 min-w-full absolute z-10 top-0 left-0 bg-teal-600 flex items-center justify-between px-[500px]">
                 <NavigationMenu>
                     <NavigationMenuList>

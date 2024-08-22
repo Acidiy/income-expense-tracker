@@ -1,7 +1,8 @@
 import { AddCategory, HotCategory } from "@/components/category"
+import { IE_PieChart } from "@/components/chart"
 import { Layout } from "@/components/dashboardlayout"
 import { Logo } from "@/components/icon/LogoIcon"
-import { ShowRecord } from "@/components/record"
+import { ShowLatestRecord, ShowRecord } from "@/components/record"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
@@ -44,13 +45,13 @@ let Dashboard = () => {
                         <div className="text-white text-xl">{user.balance}</div>
                     </div>
                 </div>
-                <div className="min-w-96 h-56 bg-slate-100 rounded-2xl"></div>
+                <IE_PieChart/>
 
                 {showAddCategory ? <AddCategory setShowAddCategory={setShowAddCategory}/> : <HotCategory setShowAddCategory={setShowAddCategory}/>}
 
                 <div className="min-w-96 h-56 bg-slate-100 rounded-2xl"></div>
             </div>
-            <ShowRecord/>
+            <ShowLatestRecord/>
         </div>
     </Layout>
 }

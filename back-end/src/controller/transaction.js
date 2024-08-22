@@ -22,3 +22,15 @@ export let getTransactionbyUserId = async (req,res) => {
         return res.status(500).json(error)
     }
 }
+
+export let getLatestTransactionbyUserId = async (req,res) => {
+    try{
+        let {user_id} = req.body
+        let userTransactions = await db.query(`SELECT * FROM record WHERE user_id = $1 ORDER BY createdat DESC LIMIT 5`,[user_id])
+        return res.status(200).json(userTransactions.rows)
+    }
+    catch(error){
+        console.error(error)
+        return res.status(500).json(error)
+    }
+}

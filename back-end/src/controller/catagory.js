@@ -46,3 +46,15 @@ export let getLatestCategory = async (req, res) => {
     }
 }
 
+export let getHottestCategory = async (req, res) => {
+    try{
+        let {user_id} = req.body
+        let categories = await db.query(`SELECT category.name, record.amount FROM record INNER JOIN category ON record.category_id = category.id WHERE user_id=$1`,[user_id])
+        return res.status(200).json(categories.rows)
+    }
+    catch(error){
+        console.error(error);
+        return res.status(500).json(error)
+    }
+}
+

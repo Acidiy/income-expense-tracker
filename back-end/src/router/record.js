@@ -1,8 +1,8 @@
 import express from 'express'
-import { getTransactionbyUserId, newTransaction } from '../controller/transaction.js'
+import { getLatestTransactionbyUserId, getTransactionbyUserId, newTransaction } from '../controller/transaction.js'
 
 let transaction = express.Router()
 
-transaction.post('/transaction', newTransaction).post('/getTransactions', getTransactionbyUserId)
+transaction.post('/transaction', newTransaction).post('/getTransactions', getTransactionbyUserId).post('/getLatestTransactions', getLatestTransactionbyUserId)
 
 export { transaction }
