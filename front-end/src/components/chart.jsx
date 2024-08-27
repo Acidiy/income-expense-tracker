@@ -16,6 +16,9 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { useEffect, useState } from "react"
+import axios from "axios"
+
 const chartData = [
   { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
   { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
@@ -24,33 +27,27 @@ const chartData = [
   { browser: "other", visitors: 90, fill: "var(--color-other)" },
 ]
 
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  chrome: {
-    label: "Chrome",
-    color: "hsl(var(--chart-1))",
-  },
-  safari: {
-    label: "Safari",
-    color: "hsl(var(--chart-2))",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "hsl(var(--chart-3))",
-  },
-  edge: {
-    label: "Edge",
-    color: "hsl(var(--chart-4))",
-  },
-  other: {
-    label: "Other",
-    color: "hsl(var(--chart-5))",
-  },
-}
-
 export let IE_PieChart = () => {
+  const BASE_URL = "http://localhost:8000"
+  let chartConfig = {
+    amount: {
+      label: "amount",
+    },
+    EXP: {
+      label: "EXP",
+      color: "hsl(var(--chart-2))",
+    },
+    INC: {
+      label: "INC",
+      color: "hsl(var(--chart-3))",
+    }
+  }
+  let [records,setRecords] = useState({})
+  useEffect(()=>{
+    let localStorageUser = JSON.parse(localStorage.getItem('user'))
+    if (!localStorageUser) return router.push('/sign-in')
+    axios.post(BASE_URL + "/api/getTransactions", { user_id: localStorageUser.id }).then((response) => {setRecords(response.data.rows.map((element)=>({...element, fill:`var(--color-${element.transaction_type})`})));return console.log(response.data.rows)})
+  },[])
   return (
     <Card className="flex">
       <CardHeader className="items-center">
@@ -68,9 +65,9 @@ export let IE_PieChart = () => {
               content={<ChartTooltipContent hideLabel />}
             />
             <Pie
-              data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
+              data={records}
+              dataKey="amount"
+              nameKey="transaction_type"
               innerRadius={60}
             />
           </PieChart>

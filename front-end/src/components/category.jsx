@@ -13,7 +13,8 @@ export let AddCategory = ({ setShowAddCategory }) => {
     let onsubmit = async (event) => {
         event.preventDefault()
 
-        await axios.post(BASE_URL+"/api/createCategory",{name:formRef.current[0].value,description:formRef.current[1].value})
+        if(formRef.current[0].value.length === 0) return setShowAddCategory((prev) => !prev)
+            else await axios.post(BASE_URL+"/api/createCategory",{name:formRef.current[0].value,description:formRef.current[1].value})
 
         return setShowAddCategory((prev) => !prev)
     }

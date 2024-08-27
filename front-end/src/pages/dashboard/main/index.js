@@ -13,7 +13,7 @@ let Dashboard = () => {
     useEffect(() => {
         let localStorageUser = JSON.parse(localStorage.getItem('user'))
         if (!localStorageUser) router.push('/sign-in')
-        else setUser(localStorageUser)
+        else setUser(localStorageUser)        
     }, [])
     return <Layout currentPage={'Main Page'}>
         <div className="size-full flex flex-col gap-8">
@@ -45,7 +45,8 @@ let Dashboard = () => {
                         <div className="text-white text-xl">{user.balance}</div>
                     </div>
                 </div>
-                <IE_PieChart/>
+
+                <IE_PieChart />
 
                 {showAddCategory ? <AddCategory setShowAddCategory={setShowAddCategory}/> : <HotCategory setShowAddCategory={setShowAddCategory}/>}
 

@@ -5,8 +5,9 @@ import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuL
 import { Input } from "./ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { useRouter } from "next/navigation";
+import { set } from "react-hook-form";
 
-export let AddRecord = () => {
+export let AddRecord = ({setShowAddRecord}) => {
     const BASE_URL = "http://localhost:8000"
     let router = useRouter()
 
@@ -51,6 +52,7 @@ export let AddRecord = () => {
             }
             if (transaction_type === 'EXP') {
                 let newBalance = localStorageUser.balance - amount
+                if (newBalance < 0) {alert("Hello! I am an alert box!!"); return setShowAddRecord((prev) => !prev)} 
                 let record = await axios.post(BASE_URL + "/api/transaction", { user_id: userId, name: formRef.current[4].value, amount: amount, description: formRef.current[5].value, transaction_type: transaction_type, category_id: chosenCategory })
                 let user_result = await axios.put(BASE_URL + "/api/updateAccountBalance", { balance: newBalance, id: userId })
                 localStorage.removeItem('user')
