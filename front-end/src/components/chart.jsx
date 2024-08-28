@@ -11,21 +11,12 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { useEffect, useState } from "react"
 import axios from "axios"
-
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 90, fill: "var(--color-other)" },
-]
 
 export let IE_PieChart = () => {
   const BASE_URL = "http://localhost:8000"
@@ -42,12 +33,13 @@ export let IE_PieChart = () => {
       color: "hsl(var(--chart-3))",
     }
   }
-  let [records,setRecords] = useState({})
-  useEffect(()=>{
+  let [records, setRecords] = useState({})
+  useEffect(() => { 
     let localStorageUser = JSON.parse(localStorage.getItem('user'))
     if (!localStorageUser) return router.push('/sign-in')
-    axios.post(BASE_URL + "/api/getTransactions", { user_id: localStorageUser.id }).then((response) => {setRecords(response.data.rows.map((element)=>({...element, fill:`var(--color-${element.transaction_type})`})));return console.log(response.data.rows)})
-  },[])
+    let inc = { transaction_type: 'INC', amount: 0 }, exp = { transaction_type: 'EXP', amount: 0 }, data = [inc, exp]
+    axios.post(BASE_URL + "/api/getTransactions", { user_id: localStorageUser.id }).then((response) => {response.data.rows.map((element)=>{if(element.transaction_type === 'EXP') data[1].amount=data[1].amount+element.amount; else{data[0].amount=data[0].amount+element.amount}}); return setRecords(data.map((element) => ({ ...element, fill: `var(--color-${element.transaction_type})` })))})
+  }, [])
   return (
     <Card className="flex">
       <CardHeader className="items-center">

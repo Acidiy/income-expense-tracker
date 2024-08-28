@@ -19,7 +19,7 @@ export let AddCategory = ({ setShowAddCategory }) => {
         return setShowAddCategory((prev) => !prev)
     }
 
-    return <div className="min-w-96 h-56 bg-gradient-to-br from-rose-600 to-amber-300 rounded-2xl relative p-8">
+    return <div className="min-w-96 h-56 bg-gradient-to-br from-rose-400 to-pink-800 rounded-2xl relative p-8">
         <form ref={formRef} onSubmit={onsubmit} className="size-full relative">
             <div className="flex gap-4">
                 <Input placeholder="name" />
@@ -45,7 +45,7 @@ export let HotCategory = ({ setShowAddCategory }) => {
         axios.post(BASE_URL + "/api/getLatestCategory", { user_id: localStorageUser.id }).then((response) => setCategories(response.data))
     })
 
-    return <div className="min-w-96 h-56 bg-gradient-to-br from-red-700 to-amber-300 rounded-2xl relative p-8">
+    return <div className="min-w-96 h-56 bg-gradient-to-br from-rose-600 to-yellow-500 rounded-2xl relative p-8">
         <div className="text-2xl font-thin text-border">Latest Used Category</div>
         <div className="flex flex-col gap-1 size-fit">{categories.map((element, index) => <div key={index} className="max-w-24 h-3 ">{element.name}</div>)}</div>
         <Button onClick={() => setShowAddCategory((prev) => !prev)} className="absolute bottom-8 right-8 bg-orange-300">Add Category</Button>
