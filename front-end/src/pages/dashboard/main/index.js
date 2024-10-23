@@ -15,6 +15,7 @@ let Dashboard = () => {
         if (!localStorageUser) router.push('/sign-in')
         else setUser(localStorageUser)        
     }, [])
+
     return <Layout currentPage={'Main Page'}>
         <div className="size-full flex flex-col gap-8">
             <div className="w-full h-fit grid grid-cols-2 grid-rows-2 gap-4">
@@ -42,7 +43,7 @@ let Dashboard = () => {
                     </svg></div>
                     <div className="absolute z-10 bottom-7 left-7">
                         <div className="text-white font-thin">Cash</div>
-                        <div className="text-white text-xl">{user.balance}</div>
+                        <div className="text-white text-xl">{user.balance || ""}</div>
                     </div>
                 </div>
 

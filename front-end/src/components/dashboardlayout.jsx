@@ -15,9 +15,6 @@ export let Layout = ({children, currentPage}) => {
         localStorageUser = JSON.parse(localStorage.getItem('user'))
 
         if(!localStorageUser) router.push('/sign-in')
-            else {
-                setAvatar(localStorageUser.avatar)
-            }
     },[])
 
     return(
